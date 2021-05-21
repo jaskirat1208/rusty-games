@@ -4,14 +4,10 @@ use std::cmp::Ordering;
 
 
 pub struct GuessingGameBoard {
-    /**
-     * Required to keep a track if the target variable is reached or not
-     */
+    /// Required to keep a track if the target variable is reached or not
     m_terminate: bool,
     
-    /**
-     * Target Variable
-     */
+    /// Target Variable
     m_target: i32       
 }
 
@@ -29,17 +25,13 @@ impl GuessingGameBoard {
 }
 
 impl GuessingGameBoard {
-    /**
-     * Initialize the state of the game. Sets a target value to reach
-     */
+    /// Initialize the state of the game. Sets a target value to reach
     pub fn init(&mut self) {
         self.m_target = rand::thread_rng().gen_range(1..100);
     }
 
-    /**
-     * Update the state of the game. No updates required as such, 
-     * just a response to the move of every player
-     */
+    /// Update the state of the game. No updates required as such, 
+    /// just a response to the move of every player
     pub fn update(&mut self, guess: &String) {
         let guess = self.get_val(guess);
 
@@ -50,18 +42,15 @@ impl GuessingGameBoard {
         }
     }
 
-    /**
-     * Returns true if the game is over
-     */
+    /// Returns true if the game is over
     pub fn terminate(&self) -> bool {
         return self.m_terminate;
     }
 
-    /**
-     * Returns true if a move is valid, otherwise false
-     * 
-     * - A move is valid when the input is a positive integer
-     */
+
+    /// Returns true if a move is valid, otherwise false
+    /// 
+    /// - A move is valid when the input is a positive integer
     pub fn is_valid(&self, turn: &String) -> bool {
         if self.get_val(turn) > 0 {
             return true;
