@@ -1,11 +1,11 @@
 // use crate::guess_game_board;
 use std::io;
 
-use crate::guess_game_board;
+use crate::guess_game::board;
 
 pub struct GuessingGame {
 
-    board: guess_game_board::GuessingGameBoard,
+    board: board::GuessingGameBoard,
     players: u8,
     last_player_move: u8
 }
@@ -28,10 +28,8 @@ impl GuessingGame {
     /// 
     /// - **players** : No of players to play this game
     pub fn new(players: u8) -> GuessingGame {
-
-
         return GuessingGame {
-            board: guess_game_board::GuessingGameBoard::new(),
+            board: board::GuessingGameBoard::new(),
             players: players,
             last_player_move: players       // Initializing it to last so that it starts from player 1
         }

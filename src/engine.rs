@@ -1,6 +1,6 @@
-use crate::guessing_game;
+use crate::guess_game;
 
-pub fn start(game: & mut guessing_game::GuessingGame) {
+pub fn start(game: & mut guess_game::game::GuessingGame) {
     // let mut game = Game<GuessGameBoard, GuessGamePlayer>::new(3/**players*/);
     game.init();
     loop {
