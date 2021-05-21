@@ -4,31 +4,31 @@ use std::io;
 use crate::guess_game_board;
 
 pub struct GuessingGame {
+
     board: guess_game_board::GuessingGameBoard,
     players: u8,
     last_player_move: u8
 }
 
-pub fn read() -> i32 {
-    let mut guess = String::new();
+pub fn read() -> String {
 
+    let mut guess = String::new();
     io::stdin()
         .read_line(&mut guess)
         .expect("Failed to read line");
-
-    let guess: i32 = match guess.trim().parse() {
-        Ok(num) => num,
-        Err(_) => {
-            println!("Please enter an integer 0 to 100");
-            return -1;
-        },
-    };
 
     return guess;
 }
 
 impl GuessingGame {
+    /**
+     * Returns a new Game Object. This object is passed on to the core engine who simulates the game play
+     * 
+     * - **players** : No of players to play this game
+     */
     pub fn new(players: u8) -> GuessingGame {
+
+
         return GuessingGame {
             board: guess_game_board::GuessingGameBoard::new(),
             players: players,
@@ -39,22 +39,29 @@ impl GuessingGame {
 
 impl GuessingGame {
     /**
-     * Initialize the state of the game
+     * Initialize the state. Sets the board state so that game can be played
      */
     pub fn init(&mut self) {
         self.board.init();
     }
     /**
-     * Update the state of the game
+     * Player plays the next move. Board is updated after every move.
+     * Every move is just a command line read operation
      */
     pub fn update(&mut self) {
-        println!("Player {}'s turn", (self.last_player_move%self.players)+1); 
-        self.board.update(read());
-        self.last_player_move = (self.last_player_move)%self.players + 1;
+        println!("Player {}'s turn", (self.last_player_move%self.players)+1);
+        let turn = read(); 
+        if self.board.is_valid(&turn) {
+            self.board.update(&turn);
+            self.last_player_move = (self.last_player_move)%self.players + 1;
+        }
+        
     }
 
     /**
-     * Condition for termination of the event loop
+     * Returns true if the game is over. This game will never result in a tie.
+     * So, skipping the case of tie, in a custom game, you can also add a handler for 
+     * tie.
      */
     pub fn terminate(&self) -> bool {
         if self.board.terminate() {
