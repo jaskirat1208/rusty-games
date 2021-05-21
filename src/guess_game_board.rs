@@ -1,45 +1,27 @@
 
 use rand::Rng;
 use std::cmp::Ordering;
-use std::io;
 
 
-pub struct GuessingGame {
+pub struct GuessingGameBoard {
     m_terminate: bool,
     m_target: i32
 }
 
 
-pub fn read() -> i32 {
-    let mut guess = String::new();
 
-    io::stdin()
-        .read_line(&mut guess)
-        .expect("Failed to read line");
 
-    let guess: i32 = match guess.trim().parse() {
-        Ok(num) => num,
-        Err(_) => {
-            println!("Please enter an integer 0 to 100");
-            return -1;
-        },
-    };
-
-    return guess;
-}
-
-impl GuessingGame {
-    pub fn new() -> GuessingGame {
-        let mut game = GuessingGame {
+impl GuessingGameBoard {
+    pub fn new() -> GuessingGameBoard {
+        let game = GuessingGameBoard {
             m_terminate: false, 
             m_target: 0
         };
-        game.init();
         return game;
     }
 }
 
-impl GuessingGame {
+impl GuessingGameBoard {
     /**
      * Initialize the state of the game
      */
@@ -50,8 +32,7 @@ impl GuessingGame {
     /**
      * Update the state of the game
      */
-    pub fn update(&mut self) {
-        let guess = read();
+    pub fn update(&mut self, guess: i32) {
 
         match guess.cmp(&self.m_target) {
             Ordering::Equal => self.handle_equal(),
@@ -68,7 +49,7 @@ impl GuessingGame {
     }
 }
 
-impl GuessingGame {
+impl GuessingGameBoard {
     fn handle_less(&self) {
         println!("Too small");
     }
