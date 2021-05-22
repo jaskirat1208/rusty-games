@@ -29,6 +29,16 @@ impl UpdateGameState for Players {
     }
 }
 
+impl Players {
+    pub fn name(&self) -> String {
+        match self {
+            Players::Human(human) => human.name(),
+            Players::ComputerEasy(computer) => computer.name(),
+            Players::ComputerHard(computer) => computer.name(),
+        }
+    }
+}
+
 pub struct GuessingGame {
     board: board::GuessingGameBoard,
     players: u8,
@@ -151,6 +161,10 @@ impl guess_game::Terminate for GuessingGame {
     }
 
     fn handle_terminate(&self) {
+        println!(
+            "Player {} wins",
+            self.get_player(self.last_player_move).name()
+        );
         println!("Good game, well played. See ya later. Goodbye");
     }
 }

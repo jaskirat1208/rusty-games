@@ -29,8 +29,8 @@ impl HumanPlayer {
         read()
     }
 
-    pub fn name(&self) -> &String {
-        &self.m_name
+    pub fn name(&self) -> String {
+        self.m_name.to_string()
     }
 }
 
