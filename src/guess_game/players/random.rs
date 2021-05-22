@@ -7,9 +7,9 @@ pub struct ComputerEasy {
 }
 
 impl ComputerEasy {
-    pub fn new(id: i32, name: &String) -> ComputerEasy {
+    pub fn new(id: i32, name: String) -> ComputerEasy {
         ComputerEasy {
-            m_name: name.to_string(),
+            m_name: name,
             _m_id: id,
         }
     }

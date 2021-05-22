@@ -9,9 +9,9 @@ pub struct ComputerHard {
 }
 
 impl ComputerHard {
-    pub fn new(id: i32, name: &String) -> ComputerHard {
+    pub fn new(id: i32, name: String) -> ComputerHard {
         ComputerHard {
-            m_name: name.to_string(),
+            m_name: name,
             _m_id: id,
             m_start: 0,
             m_end: 100,
