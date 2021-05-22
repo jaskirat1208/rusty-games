@@ -1,3 +1,5 @@
+#![doc(html_root_url = "https://jaskirat1208.github.io/rusty-games/")]
+
 mod engine;
 mod guess_game;
 
