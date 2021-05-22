@@ -1,14 +1,46 @@
-language: rust
-script:
-  - cargo build --verbose --workspace --release
-  - cargo test --verbose --workspace
-  - cargo doc --no-deps --release
+# language: rust
+# script:
+#   - cargo build --verbose --workspace --release
+#   - cargo test --verbose --workspace
+#   - cargo doc --no-deps --release
 
 
-deploy:
-  provider: pages
-  skip_cleanup: true
-  local_dir: target/doc/
-  github_token: $GH_REPO_TOKEN
-  on:
-    branch: main
+# deploy:
+#   provider: pages
+#   skip_cleanup: true
+#   local_dir: target/doc/
+#   github_token: $GH_REPO_TOKEN
+#   on:
+#     branch: main
+
+
+# jobs:
+#   stage: 
+
+jobs:
+  include:
+    - stage: Build
+      script: 
+        - echo "Building project"
+        - cargo build --verbose --workspace --release
+# Running tests
+    - stage: Test
+      script: 
+        - echo "Runnning tests"
+        - cargo test --verbose --workspace --release
+        - cargo doc --no-deps --release
+
+# Release on github pages
+    - stage: GitHub Release
+      script: 
+        - echo "Deploying to GitHub releases ..."
+        - cargo build --verbose --workspace --release
+        - cargo test --verbose --workspace --release
+        - cargo doc --no-deps --release 
+      deploy:
+        provider: pages
+        api_key: $GH_REPO_TOKEN
+        skip_cleanup: true
+        local_dir: target/doc/
+        on:
+          branch: main
