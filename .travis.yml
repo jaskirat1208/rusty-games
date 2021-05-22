@@ -8,7 +8,7 @@ script:
 deploy:
   provider: pages
   skip_cleanup: true
-  local_dir: target/doc
+  local_dir: target/doc/
   github_token: $GH_REPO_TOKEN
   on:
     branch: main
