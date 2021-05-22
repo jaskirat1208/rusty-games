@@ -10,7 +10,6 @@ enum Players {
     Human(players::human::HumanPlayer),
     ComputerEasy(players::random::ComputerEasy),
     ComputerHard(players::optimal::ComputerHard),
-    None
 }
 
 pub struct GuessingGame {
@@ -28,24 +27,6 @@ impl GuessingGame {
     /// 
     /// 
     /// - **players** : No of players to play this game
-    // pub fn new(players: u8) -> GuessingGame {
-    //     let mut player_props: Vec<Players> = Vec::new();
-
-    //     for i in 1..players+1 {
-    //         println!("Added player {}", i);
-    //         let name = i.to_string();
-    //         player_props.push(Players::Human(players::human::HumanPlayer::new(i as i32, &name)));
-    //     }
-
-    //     return GuessingGame {
-    //         board: board::GuessingGameBoard::new(),
-    //         players: players,
-    //         last_player_move: players,       // Initializing it to last so that it starts from player 1
-    //         player_props: player_props
-    //     }
-    // }
-
-
     pub fn new(players: u8, humans: u8, level: Level) -> GuessingGame {
         let mut player_props: Vec<Players> = Vec::new();
         
@@ -79,14 +60,32 @@ impl GuessingGame {
 }
 
 impl GuessingGame {
-    /// Initialize the state. Sets the board state so that game can be played
-    pub fn init(&mut self) {
-        self.board.init();
+
+    fn get_player(&self, idx: u8) -> &Players {
+        return &self.player_props[idx as usize -1];
     }
 
+    fn simulate(&mut self, turn: String) {
+        if self.board.is_valid(&turn) {
+            self.board.update(&turn);
+            self.last_player_move = (self.last_player_move)%self.players + 1;
+        }
+    }
+}
+
+use crate::guess_game;
+
+impl guess_game::Start for GuessingGame {
+    /// Initialize the state. Sets the board state so that game can be played
+    fn init(&mut self) {
+        self.board.init();
+    }
+}
+
+impl guess_game::Update for GuessingGame {
     /// Player plays the next move. Board is updated after every move. 
     /// Every move is just a command line read operation
-    pub fn update(&mut self) {
+    fn update(&mut self) {
         println!("Player {}'s turn", (self.last_player_move%self.players)+1);
 
         // Returns the Players enum object
@@ -109,15 +108,14 @@ impl GuessingGame {
                 self.simulate(turn);
             }
         }
-
-        
-        
     }
+}
 
+impl guess_game::Terminate for GuessingGame {
     /// Returns true if the game is over. This game will never result in a tie. 
     /// So, skipping the case of tie, in a custom game, you can also add a 
     /// handler for tie.
-    pub fn terminate(&self) -> bool {
+    fn can_terminate(&self) -> bool {
         if self.board.terminate() {
             // println!("Good game. Well played. Player: {} wins", self.get_player(self.last_player_move).name());
             return true;
@@ -125,14 +123,7 @@ impl GuessingGame {
         return false;
     }
 
-    fn get_player(&self, idx: u8) -> &Players {
-        return &self.player_props[idx as usize -1];
-    }
-
-    fn simulate(&mut self, turn: String) {
-        if self.board.is_valid(&turn) {
-            self.board.update(&turn);
-            self.last_player_move = (self.last_player_move)%self.players + 1;
-        }
+    fn handle_terminate(&self) {
+        println!("Good game, well played. See ya later. Goodbye");
     }
 }

@@ -1,12 +1,13 @@
 use crate::guess_game;
 
-pub fn start(game: & mut guess_game::game::GuessingGame) {
+
+pub fn start<T: guess_game::Start + guess_game::Update + guess_game::Terminate>(game: & mut T) {
     // let mut game = Game<GuessGameBoard, GuessGamePlayer>::new(3/**players*/);
     game.init();
     loop {
         game.update();
-        if game.terminate() {
-            // game.handleTerminate();
+        if game.can_terminate() {
+            game.handle_terminate();
             break;
         }
     }
