@@ -1,34 +1,19 @@
-# script:
-#   - cargo build --verbose --workspace --release
-#   - cargo test --verbose --workspace
-#   - cargo doc --no-deps --release
-
-
-# deploy:
-#   provider: pages
-#   skip_cleanup: true
-#   local_dir: target/doc/
-#   github_token: $GH_REPO_TOKEN
-#   on:
-#     branch: main
-
-
-# jobs:
-#   stage: 
-
 language: rust
 jobs:
   include:
     - stage: Build
       script: 
         - echo "Building project"
-        - cargo build --verbose --workspace --release
+        - cargo build --verbose --workspace
 # Running tests
     - stage: Test
       script: 
         - echo "Runnning tests"
         - cargo test --verbose --workspace --release
         - cargo doc --no-deps --release
+    - stage: Lint checks
+      script:
+        - cargo 
 
 # Release on github pages
     - stage: GitHub Release
@@ -44,3 +29,10 @@ jobs:
         local_dir: target/doc/
         on:
           branch: main
+    - name: 'Rust: style check'
+    if: env(ENABLE_CLIPPY) = 1
+    rust: stable
+    install:
+    - rustup component add clippy
+    script:
+    - cargo clippy --verbose --all -- -D warnings
