@@ -3,7 +3,7 @@ use crate::guess_game::players;
 
 pub enum Level {
     Easy,
-    Hard
+    Hard,
 }
 
 enum Players {

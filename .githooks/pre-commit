@@ -1,0 +1,13 @@
+#!/bin/bash
+
+diff=$(cargo fmt -- --check)
+result=$?
+
+if [[ ${result} -ne 0 ]] ; then
+    cat <<\EOF
+Lint errors found. Please fix them and run `cargo clippy`
+EOF
+    exit 1
+fi
+
+exit 0
