@@ -29,10 +29,6 @@ jobs:
         local_dir: target/doc/
         on:
           branch: main
-    - name: 'Rust: style check'
-    if: env(ENABLE_CLIPPY) = 1
-    rust: stable
-    install:
-    - rustup component add clippy
-    script:
-    - cargo clippy --verbose --all -- -D warnings
+    - stage: Lint check
+      script:
+        - cargo clippy --verbose --all -- -D warnings
