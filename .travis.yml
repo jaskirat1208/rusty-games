@@ -11,10 +11,10 @@ jobs:
         - echo "Runnning tests"
         - cargo test --verbose --workspace --release
         - cargo doc --no-deps --release
+# Lint checks. Block all warnings too
     - stage: Lint checks
       script:
-        - cargo 
-
+        - cargo clippy --verbose --all -- -D warnings
 # Release on github pages
     - stage: GitHub Release
       script: 
@@ -29,6 +29,3 @@ jobs:
         local_dir: target/doc/
         on:
           branch: main
-    - stage: Lint check
-      script:
-        - cargo clippy --verbose --all -- -D warnings
