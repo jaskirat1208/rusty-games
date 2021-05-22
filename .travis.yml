@@ -25,7 +25,7 @@ jobs:
         - cargo doc --no-deps --release 
       deploy:
         provider: pages
-        api_key: $GH_REPO_TOKEN
+        github_token: $GH_REPO_TOKEN
         skip_cleanup: true
         local_dir: target/doc/
         on:
