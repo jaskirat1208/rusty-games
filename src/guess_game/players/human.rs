@@ -1,3 +1,4 @@
+use crate::guess_game;
 use std::io;
 
 pub struct HumanPlayer {
@@ -11,24 +12,26 @@ pub fn read() -> String {
         .read_line(&mut guess)
         .expect("Failed to read line");
 
-    return guess;
+    guess
 }
 
 impl HumanPlayer {
     pub fn new(id: i32, name: &String) -> HumanPlayer {
-        return HumanPlayer {
+        HumanPlayer {
             m_name: name.to_string(),
             _m_id: id,
-        };
+        }
     }
 }
 
 impl HumanPlayer {
     pub fn play(&self) -> String {
-        return read();
+        read()
     }
 
     pub fn name(&self) -> &String {
-        return &self.m_name;
+        &self.m_name
     }
 }
+
+impl guess_game::UpdateGameState for HumanPlayer {}
