@@ -13,6 +13,8 @@ jobs:
         - cargo doc --no-deps --release
 # Lint checks. Block all warnings too
     - stage: Lint checks
+      install: 
+        - rustup component add clippy
       script:
         - cargo clippy --verbose --all -- -D warnings
 # Release on github pages
