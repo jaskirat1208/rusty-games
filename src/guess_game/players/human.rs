@@ -16,9 +16,9 @@ pub fn read() -> String {
 }
 
 impl HumanPlayer {
-    pub fn new(id: i32, name: &String) -> HumanPlayer {
+    pub fn new(id: i32, name: String) -> HumanPlayer {
         HumanPlayer {
-            m_name: name.to_string(),
+            m_name: name,
             _m_id: id,
         }
     }

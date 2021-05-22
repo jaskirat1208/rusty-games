@@ -31,7 +31,7 @@ impl GuessingGameBoard {
 
     /// Update the state of the game. No updates required as such,
     /// just a response to the move of every player
-    pub fn update(&mut self, guess: &String) -> BoardResponse {
+    pub fn update(&mut self, guess: String) -> BoardResponse {
         let guess = self.get_val(guess);
         let result = guess.cmp(&self.m_target);
 
@@ -55,8 +55,8 @@ impl GuessingGameBoard {
     /// Returns true if a move is valid, otherwise false
     ///
     /// - A move is valid when the input is a positive integer
-    pub fn is_valid(&self, turn: &String) -> bool {
-        if self.get_val(turn) > 0 {
+    pub fn is_valid(&self, turn: String) -> bool {
+        if self.get_val(turn.to_string()) > 0 {
             true
         } else {
             println!("{} => Invalid move: Please try again", turn);
@@ -66,11 +66,8 @@ impl GuessingGameBoard {
 }
 
 impl GuessingGameBoard {
-    fn get_val(&self, str: &String) -> i32 {
-        match str.trim().parse::<i32>() {
-            Ok(num) => num,
-            Err(_) => -1,
-        }
+    fn get_val(&self, str: String) -> i32 {
+        str.trim().parse::<i32>().unwrap_or(-1)
     }
 
     fn handle_less(&self) {

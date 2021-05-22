@@ -50,7 +50,7 @@ impl GuessingGame {
                 println!("Adding Human player with id: {}", i);
                 let name = format!("Human {}", i.to_string());
                 player_props.push(Players::Human(players::human::HumanPlayer::new(
-                    i as i32, &name,
+                    i as i32, name,
                 )));
             } else {
                 println!("Adding bot with id: {}", i);
@@ -58,13 +58,13 @@ impl GuessingGame {
                 match level {
                     Level::Easy => {
                         let bot = Players::ComputerEasy(players::random::ComputerEasy::new(
-                            i as i32, &name,
+                            i as i32, name,
                         ));
                         player_props.push(bot);
                     }
                     Level::Hard => {
                         player_props.push(Players::ComputerHard(
-                            players::optimal::ComputerHard::new(i as i32, &name),
+                            players::optimal::ComputerHard::new(i as i32, name),
                         ));
                     }
                 }
@@ -86,8 +86,8 @@ impl GuessingGame {
     }
 
     fn simulate(&mut self, turn: String) {
-        if self.board.is_valid(&turn) {
-            let board_response = self.board.update(&turn);
+        if self.board.is_valid(turn.to_string()) {
+            let board_response = self.board.update(turn);
             let state = guess_game::Turn::GuessingGame(GuessingGameState {
                 id: self.last_player_move,
                 board_response,
@@ -136,10 +136,6 @@ impl guess_game::Update for GuessingGame {
             Players::ComputerHard(computer) => {
                 let turn = computer.play();
                 println!("Player {} played: {}", computer.name(), turn);
-                self.simulate(turn);
-            }
-            _ => {
-                let turn = String::from("Forfeit");
                 self.simulate(turn);
             }
         }
