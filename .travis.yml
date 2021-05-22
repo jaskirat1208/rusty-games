@@ -21,8 +21,7 @@ jobs:
     - stage: GitHub Release
       script: 
         - echo "Deploying to GitHub releases ..."
-        - cargo build --verbose --workspace --release
-        - cargo test --verbose --workspace --release
+        - cargo clean
         - cargo doc --no-deps --release 
       deploy:
         provider: pages
