@@ -34,14 +34,8 @@ impl<Board: traits::board_traits::Update<Turn, Response>, Turn, Response>
     /// otherwise returns the result and forwards it to the handlers of all players.
     fn simulate(&mut self, turn: Turn, curr_player: u8) {
         if self.board.is_valid(&turn) {
-            // Stuck. How to create a generic board response which is valid for any game?
-            // - trait(NA because a trait would have the same function which would
-            // have to return the same value)
-            // template it up
-            // Resolved: The communications will happen via json strings
-            // The board will read the responses via a json string and will send the move results via another json string
             let board_response: Response = self.board.update(&turn, curr_player);
-            // Create a boardinfo out of
+
             for player in self.players.iter_mut() {
                 player.update_game_state(&board_response);
             }
@@ -67,7 +61,7 @@ impl<Board: traits::board_traits::Update<Turn, Response>, Turn, Response>
         let player_props = self.get_player(curr_player);
         println!("Player {}'s turn", (*player_props).name());
 
-        let move_played = self.get_player(curr_player).play();
+        let move_played = (*player_props).play();
         self.simulate(move_played, curr_player);
     }
 }

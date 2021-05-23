@@ -34,6 +34,7 @@ pub mod player_traits {
 }
 
 pub mod board_traits {
+
     pub trait New<Board> {
         fn new() -> Self;
     }
@@ -41,8 +42,8 @@ pub mod board_traits {
     pub trait Info {
         fn board_response() {}
     }
-    pub trait Update<MoveInfo, BoardInfo> {
-        fn is_valid(&self, turn: &MoveInfo) -> bool;
-        fn update(&mut self, turn: &MoveInfo, curr_player: u8) -> BoardInfo;
+    pub trait Update<PlayerMove, Response> {
+        fn is_valid(&self, turn: &PlayerMove) -> bool;
+        fn update(&mut self, turn: &PlayerMove, curr_player: u8) -> Response;
     }
 }

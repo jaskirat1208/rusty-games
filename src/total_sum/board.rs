@@ -2,7 +2,6 @@ use crate::traits;
 
 pub struct BoardResponse {
     pub move_played: i32,
-    pub played_by: u8,
 }
 
 pub struct Board {
@@ -49,10 +48,7 @@ impl traits::board_traits::Update<String, BoardResponse> for Board {
             }
             self.m_terminate = true
         }
-        BoardResponse {
-            move_played,
-            played_by,
-        }
+        BoardResponse { move_played }
     }
 
     /// Returns true if a move is valid, otherwise false

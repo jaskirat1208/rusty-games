@@ -7,7 +7,6 @@ pub struct BoardResponse {
     // THe move object should be the template Move object specified in the game)
     pub move_played: i32,
     pub result: Ordering,
-    pub played_by: u8,
 }
 
 pub struct GuessingGameBoard {
@@ -51,7 +50,6 @@ impl traits::board_traits::Update<String, BoardResponse> for GuessingGameBoard {
         BoardResponse {
             move_played: guess,
             result,
-            played_by,
         }
     }
 
