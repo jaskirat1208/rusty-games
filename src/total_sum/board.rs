@@ -8,7 +8,7 @@ pub struct BoardResponse {
     pub played_by: u8,
 }
 
-pub struct GuessingGameBoard2 {
+struct GuessingGameBoard {
     /// Required to keep a track if the target variable is reached or not
     m_terminate: bool,
 
@@ -16,26 +16,26 @@ pub struct GuessingGameBoard2 {
     m_target: i32,
 }
 
-impl traits::board_traits::New<GuessingGameBoard2> for GuessingGameBoard2 {
-    fn new() -> GuessingGameBoard2 {
-        GuessingGameBoard2 {
+impl traits::board_traits::New<GuessingGameBoard> for GuessingGameBoard {
+    fn new() -> GuessingGameBoard {
+        GuessingGameBoard {
             m_terminate: false,
             m_target: 0,
         }
     }
 }
 
-impl traits::game_traits::Start for GuessingGameBoard2 {
+impl traits::game_traits::Start for GuessingGameBoard {
     /// Initialize the state of the game. Sets a target value to reach
     fn init(&mut self) {
         self.m_target = rand::thread_rng().gen_range(1..100);
     }
 }
 
-impl traits::board_traits::Update<String, traits::player_traits::Turn> for GuessingGameBoard2 {
+impl traits::board_traits::Update<String, BoardResponse> for GuessingGameBoard {
     /// Update the state of the game. No updates required as such,
     /// just a response to the move of every player
-    fn update(&mut self, guess: &String, played_by: u8) -> traits::player_traits::Turn {
+    fn update(&mut self, guess: &String, played_by: u8) -> BoardResponse {
         let guess = self.get_val(guess.to_string());
         println!("player {} played: {}", played_by, guess.to_string());
         let result = guess.cmp(&self.m_target);
@@ -46,11 +46,11 @@ impl traits::board_traits::Update<String, traits::player_traits::Turn> for Guess
             Ordering::Equal => self.handle_equal(),
         }
 
-        traits::player_traits::Turn::TotalSum(BoardResponse {
+        BoardResponse {
             move_played: guess,
             result,
             played_by,
-        })
+        }
     }
 
     /// Returns true if a move is valid, otherwise false
@@ -66,7 +66,7 @@ impl traits::board_traits::Update<String, traits::player_traits::Turn> for Guess
     }
 }
 
-impl traits::game_traits::Terminate for GuessingGameBoard2 {
+impl traits::game_traits::Terminate for GuessingGameBoard {
     /// Returns true if the game is over
     fn can_terminate(&self) -> bool {
         self.m_terminate
@@ -75,7 +75,7 @@ impl traits::game_traits::Terminate for GuessingGameBoard2 {
     fn handle_terminate(&self) {}
 }
 
-impl GuessingGameBoard2 {
+impl GuessingGameBoard {
     fn get_val(&self, str: String) -> i32 {
         str.trim().parse::<i32>().unwrap_or(-1)
     }

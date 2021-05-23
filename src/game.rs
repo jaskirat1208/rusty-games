@@ -1,6 +1,11 @@
 use crate::traits;
 
-type Bots<Turn, Response> = Vec<traits::player_traits::TotalSumPlayerBox<Turn, Response>>;
+pub enum Level {
+    Easy,
+    Hard
+}
+
+type Bots<Turn, Response> = Vec<traits::player_traits::PlayerBox<Turn, Response>>;
 
 pub struct Game<Board, Turn, Response> {
     board: Board,
@@ -9,7 +14,7 @@ pub struct Game<Board, Turn, Response> {
 }
 
 impl<Board: traits::board_traits::New<Board>, Turn, Response> Game<Board, Turn, Response> {
-    pub fn new_w_custom_bots(bots: Bots<Turn, Response>) -> Game<Board, Turn, Response> {
+    pub fn new(bots: Bots<Turn, Response>) -> Game<Board, Turn, Response> {
         Game {
             board: Board::new(),
             last_player_move: bots.len() as u8,
@@ -21,7 +26,7 @@ impl<Board: traits::board_traits::New<Board>, Turn, Response> Game<Board, Turn, 
 impl<Board: traits::board_traits::Update<Turn, Response>, Turn, Response>
     Game<Board, Turn, Response>
 {
-    fn get_player(&self, idx: u8) -> &traits::player_traits::TotalSumPlayerBox<Turn, Response> {
+    fn get_player(&self, idx: u8) -> &traits::player_traits::PlayerBox<Turn, Response> {
         &self.players[idx as usize - 1]
     }
 

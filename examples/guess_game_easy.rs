@@ -1,8 +1,14 @@
 use puzzle_games::engine;
 use puzzle_games::guess_game;
+use puzzle_games::game;
 
 fn main() {
-    let mut game = guess_game::game::GuessingGame::new(3, 1, guess_game::game::Level::Easy);
+    let bots = guess_game::players::get_computer_players(2, game::Level::Easy);
 
+    let mut game = game::Game::<
+        guess_game::board::GuessingGameBoard,
+        String,
+        guess_game::board::BoardResponse,
+    >::new(bots);
     engine::start(&mut game);
 }

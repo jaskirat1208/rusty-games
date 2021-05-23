@@ -15,16 +15,9 @@ pub mod game_traits {
 }
 
 pub mod player_traits {
-    use crate::guess_game;
-    use crate::total_sum;
 
     pub trait Play<PlayerMove> {
         fn play(&self) -> PlayerMove;
-    }
-
-    pub enum Turn {
-        GuessingGame(guess_game::game::GuessingGameState),
-        TotalSum(total_sum::board::BoardResponse),
     }
 
     pub trait UpdateGameState<Response> {
@@ -37,14 +30,12 @@ pub mod player_traits {
 
     pub trait Player<Turn, Response>: Play<Turn> + UpdateGameState<Response> + Name {}
 
-    pub type PlayerBox = Box<dyn Player<String, Turn>>;
-
-    pub type TotalSumPlayerBox<PlayerMove, Response> = Box<dyn Player<PlayerMove, Response>>;
+    pub type PlayerBox<PlayerMove, Response> = Box<dyn Player<PlayerMove, Response>>;
 }
 
 pub mod board_traits {
     pub trait New<Board> {
-        fn new() -> Board;
+        fn new() -> Self;
     }
 
     pub trait Info {
