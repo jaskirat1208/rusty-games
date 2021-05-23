@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["board_traits",""],["game_traits",""],["player_traits",""]]});

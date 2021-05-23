@@ -1,0 +1,1 @@
+initSidebarItems({"trait":[["Name",""],["Play",""],["Player",""],["UpdateGameState",""]],"type":[["PlayerBox",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["get_computer_players",""],["get_human_players",""]],"mod":[["human",""],["optimal",""],["random",""]]});

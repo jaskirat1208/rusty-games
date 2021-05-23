@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ComputerHard","Whenever the computer receives info about the turn played by a player, it will try to update the range of the target number. The next move it plays is the mean of this range."]]});
