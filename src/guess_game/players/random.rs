@@ -1,4 +1,4 @@
-use crate::guess_game;
+use crate::traits;
 use rand::Rng;
 
 pub struct ComputerEasy {
@@ -15,14 +15,17 @@ impl ComputerEasy {
     }
 }
 
-impl ComputerEasy {
-    pub fn play(&self) -> String {
-        rand::thread_rng().gen_range(1..100).to_string()
-    }
-
-    pub fn name(&self) -> String {
+impl traits::player_traits::Name for ComputerEasy {
+    fn name(&self) -> String {
         self.m_name.to_string()
     }
 }
 
-impl guess_game::UpdateGameState for ComputerEasy {}
+impl traits::player_traits::Play for ComputerEasy {
+    fn play(&self) -> String {
+        rand::thread_rng().gen_range(1..100).to_string()
+    }
+}
+
+impl traits::player_traits::UpdateGameState for ComputerEasy {}
+impl traits::player_traits::Player for ComputerEasy {}

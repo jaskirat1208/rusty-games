@@ -1,4 +1,4 @@
-use crate::guess_game;
+use crate::traits;
 use std::io;
 
 pub struct HumanPlayer {
@@ -24,14 +24,17 @@ impl HumanPlayer {
     }
 }
 
-impl HumanPlayer {
-    pub fn play(&self) -> String {
-        read()
-    }
-
-    pub fn name(&self) -> String {
+impl traits::player_traits::Name for HumanPlayer {
+    fn name(&self) -> String {
         self.m_name.to_string()
     }
 }
 
-impl guess_game::UpdateGameState for HumanPlayer {}
+impl traits::player_traits::Play for HumanPlayer {
+    fn play(&self) -> String {
+        read()
+    }
+}
+
+impl traits::player_traits::UpdateGameState for HumanPlayer {}
+impl traits::player_traits::Player for HumanPlayer {}
