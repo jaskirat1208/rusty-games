@@ -28,3 +28,7 @@ pub enum Turn {
 pub trait UpdateGameState {
     fn update_game_state(&mut self, _turn: &Turn) {}
 }
+
+pub trait Name {
+    fn name(&self) -> String;
+}

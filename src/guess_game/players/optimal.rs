@@ -28,11 +28,11 @@ impl ComputerHard {
     }
 }
 
-impl ComputerHard {
+impl guess_game::Name for ComputerHard {
     /**
      * Returns the name of the bot.
      */
-    pub fn name(&self) -> String {
+    fn name(&self) -> String {
         self.m_name.to_string()
     }
 }
@@ -69,3 +69,5 @@ impl guess_game::UpdateGameState for ComputerHard {
         }
     }
 }
+
+impl guess_game::players::Player for ComputerHard {}
