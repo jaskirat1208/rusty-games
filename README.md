@@ -16,7 +16,7 @@ player_traits::UpdateState
 player_traits::Name
 ```
 - Once you created this, in your main file, create a trait object(a box pointer to a trait object) mentioned in the library as PlayerBox, and pass it in a vector. In this vector, you can also pass in the inbuilt AIs too. Then call the function `guess_game::game::new_w_custom_bots` and pass the vector into it. Your main file would look something similar to this:
-```rust
+```
     let bots = Vec::new();
     boxed_ai.push(Box::new(ComputerHard), Box::new(MY_CUSTOM_AI_BOT));
     let mut game = guess_game::game::GuessingGame::new_w_custom_bots(bots);
