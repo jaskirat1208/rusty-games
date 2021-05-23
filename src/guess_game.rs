@@ -1,4 +1,3 @@
-pub mod game;
 pub mod players;
 
-mod board;
+pub mod board;

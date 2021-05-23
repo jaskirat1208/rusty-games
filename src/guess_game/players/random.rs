@@ -1,3 +1,4 @@
+use crate::guess_game;
 use crate::traits;
 use rand::Rng;
 
@@ -21,11 +22,11 @@ impl traits::player_traits::Name for ComputerEasy {
     }
 }
 
-impl traits::player_traits::Play for ComputerEasy {
+impl traits::player_traits::Play<String> for ComputerEasy {
     fn play(&self) -> String {
         rand::thread_rng().gen_range(1..100).to_string()
     }
 }
 
-impl traits::player_traits::UpdateGameState for ComputerEasy {}
-impl traits::player_traits::Player for ComputerEasy {}
+impl traits::player_traits::UpdateGameState<guess_game::board::BoardResponse> for ComputerEasy {}
+impl traits::player_traits::Player<String, guess_game::board::BoardResponse> for ComputerEasy {}

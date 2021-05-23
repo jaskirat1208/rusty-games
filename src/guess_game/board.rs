@@ -1,9 +1,11 @@
+use crate::traits;
 use rand::Rng;
 use std::cmp::Ordering;
 
 pub struct BoardResponse {
     pub move_played: i32,
     pub result: Ordering,
+    pub played_by: u8,
 }
 
 pub struct GuessingGameBoard {
@@ -14,8 +16,8 @@ pub struct GuessingGameBoard {
     m_target: i32,
 }
 
-impl GuessingGameBoard {
-    pub fn new() -> GuessingGameBoard {
+impl traits::board_traits::New<GuessingGameBoard> for GuessingGameBoard {
+    fn new() -> GuessingGameBoard {
         GuessingGameBoard {
             m_terminate: false,
             m_target: 0,
@@ -23,16 +25,19 @@ impl GuessingGameBoard {
     }
 }
 
-impl GuessingGameBoard {
+impl traits::game_traits::Start for GuessingGameBoard {
     /// Initialize the state of the game. Sets a target value to reach
-    pub fn init(&mut self) {
+    fn init(&mut self) {
         self.m_target = rand::thread_rng().gen_range(1..100);
     }
+}
 
+impl traits::board_traits::Update<String, BoardResponse> for GuessingGameBoard {
     /// Update the state of the game. No updates required as such,
     /// just a response to the move of every player
-    pub fn update(&mut self, guess: String) -> BoardResponse {
-        let guess = self.get_val(guess);
+    fn update(&mut self, guess: &String, played_by: u8) -> BoardResponse {
+        let guess = self.get_val(guess.to_string());
+        println!("player {} played: {}", played_by, guess.to_string());
         let result = guess.cmp(&self.m_target);
 
         match result {
@@ -44,18 +49,14 @@ impl GuessingGameBoard {
         BoardResponse {
             move_played: guess,
             result,
+            played_by,
         }
-    }
-
-    /// Returns true if the game is over
-    pub fn terminate(&self) -> bool {
-        self.m_terminate
     }
 
     /// Returns true if a move is valid, otherwise false
     ///
     /// - A move is valid when the input is a positive integer
-    pub fn is_valid(&self, turn: String) -> bool {
+    fn is_valid(&self, turn: &String) -> bool {
         if self.get_val(turn.to_string()) > 0 {
             true
         } else {
@@ -63,6 +64,15 @@ impl GuessingGameBoard {
             false
         }
     }
+}
+
+impl traits::game_traits::Terminate for GuessingGameBoard {
+    /// Returns true if the game is over
+    fn can_terminate(&self) -> bool {
+        self.m_terminate
+    }
+
+    fn handle_terminate(&self) {}
 }
 
 impl GuessingGameBoard {

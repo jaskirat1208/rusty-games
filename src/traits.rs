@@ -15,23 +15,34 @@ pub mod game_traits {
 }
 
 pub mod player_traits {
-    use crate::guess_game;
 
-    pub trait Play {
-        fn play(&self) -> String;
+    pub trait Play<PlayerMove> {
+        fn play(&self) -> PlayerMove;
     }
 
-    pub enum Turn {
-        GuessingGame(guess_game::game::GuessingGameState),
-    }
-
-    pub trait UpdateGameState {
-        fn update_game_state(&mut self, _turn: &Turn) {}
+    pub trait UpdateGameState<Response> {
+        fn update_game_state(&mut self, _turn: &Response) {}
     }
 
     pub trait Name {
         fn name(&self) -> String;
     }
 
-    pub trait Player: Play + UpdateGameState + Name {}
+    pub trait Player<Turn, Response>: Play<Turn> + UpdateGameState<Response> + Name {}
+
+    pub type PlayerBox<PlayerMove, Response> = Box<dyn Player<PlayerMove, Response>>;
+}
+
+pub mod board_traits {
+    pub trait New<Board> {
+        fn new() -> Self;
+    }
+
+    pub trait Info {
+        fn board_response() {}
+    }
+    pub trait Update<MoveInfo, BoardInfo> {
+        fn is_valid(&self, turn: &MoveInfo) -> bool;
+        fn update(&mut self, turn: &MoveInfo, curr_player: u8) -> BoardInfo;
+    }
 }
