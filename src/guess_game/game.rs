@@ -2,8 +2,6 @@ use crate::guess_game::board;
 use crate::guess_game::players;
 use crate::traits;
 
-type PlayerBox = Box<dyn traits::player_traits::Player>;
-
 pub enum Level {
     Easy,
     Hard,
@@ -18,7 +16,7 @@ pub struct GuessingGame {
     board: board::GuessingGameBoard,
     players: u8,
     last_player_move: u8,
-    player_props: Vec<PlayerBox>,
+    player_props: Vec<traits::player_traits::PlayerBox>,
 }
 
 impl GuessingGame {
@@ -28,7 +26,7 @@ impl GuessingGame {
     ///
     /// - **players** : No of players to play this game
     pub fn new(players: u8, humans: u8, level: Level) -> GuessingGame {
-        let mut player_props: Vec<PlayerBox> = Vec::new();
+        let mut player_props: Vec<traits::player_traits::PlayerBox> = Vec::new();
 
         for i in 1..players + 1 {
             if i <= humans {
@@ -64,7 +62,7 @@ impl GuessingGame {
      * All players(human and AI) are specified upfront into a vector. This will
      * register them and return the game object.
      */
-    pub fn new_w_custom_bots(bots: Vec<PlayerBox>) -> GuessingGame {
+    pub fn new_w_custom_bots(bots: Vec<traits::player_traits::PlayerBox>) -> GuessingGame {
         let players = bots.len() as u8;
         GuessingGame {
             board: board::GuessingGameBoard::new(),
@@ -76,7 +74,7 @@ impl GuessingGame {
 }
 
 impl GuessingGame {
-    fn get_player(&self, idx: u8) -> &PlayerBox {
+    fn get_player(&self, idx: u8) -> &traits::player_traits::PlayerBox {
         &self.player_props[idx as usize - 1]
     }
 

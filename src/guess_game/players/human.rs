@@ -30,11 +30,11 @@ impl traits::player_traits::Name for HumanPlayer {
     }
 }
 
-impl traits::player_traits::Play for HumanPlayer {
+impl traits::player_traits::Play<String> for HumanPlayer {
     fn play(&self) -> String {
         read()
     }
 }
 
-impl traits::player_traits::UpdateGameState for HumanPlayer {}
-impl traits::player_traits::Player for HumanPlayer {}
+impl traits::player_traits::UpdateGameState<traits::player_traits::Turn> for HumanPlayer {}
+impl traits::player_traits::Player<String, traits::player_traits::Turn> for HumanPlayer {}

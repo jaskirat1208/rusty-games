@@ -37,7 +37,7 @@ impl traits::player_traits::Name for ComputerHard {
     }
 }
 
-impl traits::player_traits::Play for ComputerHard {
+impl traits::player_traits::Play<String> for ComputerHard {
     /**
      * Plays the next move. Returns the middle value of the range
      * Called on turn.
@@ -47,7 +47,7 @@ impl traits::player_traits::Play for ComputerHard {
     }
 }
 
-impl traits::player_traits::UpdateGameState for ComputerHard {
+impl traits::player_traits::UpdateGameState<traits::player_traits::Turn> for ComputerHard {
     /**
      * Updates the state of the game.
      * Called after a player plays its move
@@ -66,8 +66,9 @@ impl traits::player_traits::UpdateGameState for ComputerHard {
                     self.m_end = turn.id as i32;
                 }
             },
+            _ => {}
         }
     }
 }
 
-impl traits::player_traits::Player for ComputerHard {}
+impl traits::player_traits::Player<String, traits::player_traits::Turn> for ComputerHard {}
