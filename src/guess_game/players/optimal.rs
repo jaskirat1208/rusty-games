@@ -1,4 +1,4 @@
-use crate::guess_game;
+use crate::traits;
 use std::cmp;
 use std::cmp::Ordering;
 
@@ -28,7 +28,7 @@ impl ComputerHard {
     }
 }
 
-impl guess_game::Name for ComputerHard {
+impl traits::player_traits::Name for ComputerHard {
     /**
      * Returns the name of the bot.
      */
@@ -37,7 +37,7 @@ impl guess_game::Name for ComputerHard {
     }
 }
 
-impl guess_game::Play for ComputerHard {
+impl traits::player_traits::Play for ComputerHard {
     /**
      * Plays the next move. Returns the middle value of the range
      * Called on turn.
@@ -47,14 +47,14 @@ impl guess_game::Play for ComputerHard {
     }
 }
 
-impl guess_game::UpdateGameState for ComputerHard {
+impl traits::player_traits::UpdateGameState for ComputerHard {
     /**
      * Updates the state of the game.
      * Called after a player plays its move
      */
-    fn update_game_state(&mut self, turn: &guess_game::Turn) {
+    fn update_game_state(&mut self, turn: &traits::player_traits::Turn) {
         match turn {
-            guess_game::Turn::GuessingGame(turn) => match turn.board_response.result {
+            traits::player_traits::Turn::GuessingGame(turn) => match turn.board_response.result {
                 Ordering::Less => {
                     self.m_start = cmp::max(self.m_start, turn.board_response.move_played) as i32
                 }
@@ -70,4 +70,4 @@ impl guess_game::UpdateGameState for ComputerHard {
     }
 }
 
-impl guess_game::players::Player for ComputerHard {}
+impl traits::player_traits::Player for ComputerHard {}

@@ -1,8 +1,8 @@
-use crate::guess_game;
 use crate::guess_game::board;
 use crate::guess_game::players;
+use crate::traits;
 
-type Player = Box<dyn guess_game::players::Player>;
+type PlayerBox = Box<dyn traits::player_traits::Player>;
 
 pub enum Level {
     Easy,
@@ -18,7 +18,7 @@ pub struct GuessingGame {
     board: board::GuessingGameBoard,
     players: u8,
     last_player_move: u8,
-    player_props: Vec<Player>,
+    player_props: Vec<PlayerBox>,
 }
 
 impl GuessingGame {
@@ -28,7 +28,7 @@ impl GuessingGame {
     ///
     /// - **players** : No of players to play this game
     pub fn new(players: u8, humans: u8, level: Level) -> GuessingGame {
-        let mut player_props: Vec<Player> = Vec::new();
+        let mut player_props: Vec<PlayerBox> = Vec::new();
 
         for i in 1..players + 1 {
             if i <= humans {
@@ -60,7 +60,11 @@ impl GuessingGame {
         }
     }
 
-    pub fn new_w_custom_bots(bots: Vec<Player>) -> GuessingGame {
+    /**
+     * All players(human and AI) are specified upfront into a vector. This will
+     * register them and return the game object.
+     */
+    pub fn new_w_custom_bots(bots: Vec<PlayerBox>) -> GuessingGame {
         let players = bots.len() as u8;
         GuessingGame {
             board: board::GuessingGameBoard::new(),
@@ -72,14 +76,16 @@ impl GuessingGame {
 }
 
 impl GuessingGame {
-    fn get_player(&self, idx: u8) -> &Player {
+    fn get_player(&self, idx: u8) -> &PlayerBox {
         &self.player_props[idx as usize - 1]
     }
 
+    /// Checks if the move is valid. If invalid, asks the player to move again,
+    /// otherwise returns the result and forwards it to the handlers of all players.
     fn simulate(&mut self, turn: String) {
         if self.board.is_valid(turn.to_string()) {
             let board_response = self.board.update(turn);
-            let state = guess_game::Turn::GuessingGame(GuessingGameState {
+            let state = traits::player_traits::Turn::GuessingGame(GuessingGameState {
                 id: self.last_player_move,
                 board_response,
             });
@@ -91,14 +97,14 @@ impl GuessingGame {
     }
 }
 
-impl guess_game::Start for GuessingGame {
+impl traits::game_traits::Start for GuessingGame {
     /// Initialize the state. Sets the board state so that game can be played
     fn init(&mut self) {
         self.board.init();
     }
 }
 
-impl guess_game::Update for GuessingGame {
+impl traits::game_traits::Update for GuessingGame {
     /// Player plays the next move. Board is updated after every move.
     /// Every move is just a command line read operation
     fn update(&mut self) {
@@ -116,14 +122,17 @@ impl guess_game::Update for GuessingGame {
     }
 }
 
-impl guess_game::Terminate for GuessingGame {
+impl traits::game_traits::Terminate for GuessingGame {
     /// Returns true if the game is over. This game will never result in a tie.
     /// So, skipping the case of tie, in a custom game, you can also add a
-    /// handler for tie.
+    /// handler for tie. This is an indication for the engine to call the
+    /// `handle_terminate` method
     fn can_terminate(&self) -> bool {
         self.board.terminate()
     }
 
+    /// Behanviour of the game when termination occurs. In this case,
+    /// it just says goodbye and exits
     fn handle_terminate(&self) {
         println!(
             "Player {} wins",
