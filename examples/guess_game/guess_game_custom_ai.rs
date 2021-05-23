@@ -1,3 +1,5 @@
+extern crate puzzle_games;
+
 use puzzle_games::engine;
 use puzzle_games::game;
 use puzzle_games::guess_game;

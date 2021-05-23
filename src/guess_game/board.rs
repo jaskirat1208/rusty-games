@@ -3,6 +3,8 @@ use rand::Rng;
 use std::cmp::Ordering;
 
 pub struct BoardResponse {
+    // TODO(Remove result. Let the AI compute the mapping himself.
+    // THe move object should be the template Move object specified in the game)
     pub move_played: i32,
     pub result: Ordering,
     pub played_by: u8,

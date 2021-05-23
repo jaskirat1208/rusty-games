@@ -8,3 +8,28 @@ edition = "2018"
 
 [dependencies]
 rand = "0.8.3"
+
+
+
+# Examples: Guess The number
+[[example]]
+name = "guess_the_no_easy"
+path = "examples/guess_game/guess_game_easy.rs"
+
+[[example]]
+name = "guess_the_no_custom"
+path = "examples/guess_game/guess_game_custom_ai.rs"
+
+[[example]]
+name = "guess_the_no_hard"
+path = "examples/guess_game/guess_game_hard.rs"
+
+[[example]]
+name = "guess_the_no_human"
+path = "examples/guess_game/guess_game_human.rs"
+
+
+# Examples: Total sum
+[[example]]
+name = "total_sum_human"
+path = "examples/total_sum/human.rs"
