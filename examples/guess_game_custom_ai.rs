@@ -1,11 +1,11 @@
 use puzzle_games::engine;
+use puzzle_games::game;
 use puzzle_games::guess_game;
-use puzzle_games::total_sum;
 use puzzle_games::traits;
 
 use std::cmp;
 
-type PlayerBox = traits::player_traits::PlayerBox;
+type PlayerBox = traits::player_traits::PlayerBox<String, guess_game::board::BoardResponse>;
 
 struct MyCustomBot {
     name: String,
@@ -28,26 +28,21 @@ impl traits::player_traits::Name for MyCustomBot {
     }
 }
 
-impl traits::player_traits::UpdateGameState<traits::player_traits::Turn> for MyCustomBot {
-    fn update_game_state(&mut self, turn: &traits::player_traits::Turn) {
-        match turn {
-            traits::player_traits::Turn::GuessingGame(state) => {
-                match state.board_response.result {
-                    cmp::Ordering::Less => {
-                        self.start = cmp::max(self.start, state.board_response.move_played);
-                    }
-                    cmp::Ordering::Greater => {
-                        self.end = cmp::min(self.end, state.board_response.move_played);
-                    }
-                    cmp::Ordering::Equal => {}
-                };
+impl traits::player_traits::UpdateGameState<guess_game::board::BoardResponse> for MyCustomBot {
+    fn update_game_state(&mut self, response: &guess_game::board::BoardResponse) {
+        match response.result {
+            cmp::Ordering::Less => {
+                self.start = cmp::max(self.start, response.move_played);
             }
-            _ => {}
-        }
+            cmp::Ordering::Greater => {
+                self.end = cmp::min(self.end, response.move_played);
+            }
+            cmp::Ordering::Equal => {}
+        };
     }
 }
 
-impl traits::player_traits::Player<String, traits::player_traits::Turn> for MyCustomBot {}
+impl traits::player_traits::Player<String, guess_game::board::BoardResponse> for MyCustomBot {}
 
 fn main() {
     let mut bots: Vec<PlayerBox> = Vec::new();
@@ -63,11 +58,11 @@ fn main() {
     };
     bots.push(Box::new(custom));
 
-    let mut game = total_sum::game::Game::<
-        total_sum::board::GuessingGameBoard2,
+    let mut game = game::Game::<
+        guess_game::board::GuessingGameBoard,
         String,
-        traits::player_traits::Turn,
-    >::new_w_custom_bots(bots);
+        guess_game::board::BoardResponse,
+    >::new(bots);
 
     engine::start(&mut game);
 }

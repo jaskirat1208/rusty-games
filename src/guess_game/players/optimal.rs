@@ -1,6 +1,6 @@
+use crate::guess_game;
 use crate::traits;
 use std::cmp;
-use std::cmp::Ordering;
 
 /**
  * Whenever the computer receives info about the turn played by a player,
@@ -47,28 +47,22 @@ impl traits::player_traits::Play<String> for ComputerHard {
     }
 }
 
-impl traits::player_traits::UpdateGameState<traits::player_traits::Turn> for ComputerHard {
+impl traits::player_traits::UpdateGameState<guess_game::board::BoardResponse> for ComputerHard {
     /**
      * Updates the state of the game.
      * Called after a player plays its move
      */
-    fn update_game_state(&mut self, turn: &traits::player_traits::Turn) {
-        match turn {
-            traits::player_traits::Turn::GuessingGame(turn) => match turn.board_response.result {
-                Ordering::Less => {
-                    self.m_start = cmp::max(self.m_start, turn.board_response.move_played) as i32
-                }
-                Ordering::Greater => {
-                    self.m_end = cmp::min(self.m_end, turn.board_response.move_played) as i32
-                }
-                _ => {
-                    self.m_start = turn.id as i32;
-                    self.m_end = turn.id as i32;
-                }
-            },
-            _ => {}
-        }
+    fn update_game_state(&mut self, response: &guess_game::board::BoardResponse) {
+        match response.result {
+            cmp::Ordering::Less => {
+                self.m_start = cmp::max(self.m_start, response.move_played);
+            }
+            cmp::Ordering::Greater => {
+                self.m_end = cmp::min(self.m_end, response.move_played);
+            }
+            cmp::Ordering::Equal => {}
+        };
     }
 }
 
-impl traits::player_traits::Player<String, traits::player_traits::Turn> for ComputerHard {}
+impl traits::player_traits::Player<String, guess_game::board::BoardResponse> for ComputerHard {}

@@ -1,3 +1,4 @@
+use crate::guess_game;
 use crate::traits;
 use std::io;
 
@@ -36,5 +37,5 @@ impl traits::player_traits::Play<String> for HumanPlayer {
     }
 }
 
-impl traits::player_traits::UpdateGameState<traits::player_traits::Turn> for HumanPlayer {}
-impl traits::player_traits::Player<String, traits::player_traits::Turn> for HumanPlayer {}
+impl traits::player_traits::UpdateGameState<guess_game::board::BoardResponse> for HumanPlayer {}
+impl traits::player_traits::Player<String, guess_game::board::BoardResponse> for HumanPlayer {}

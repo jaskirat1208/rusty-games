@@ -1,3 +1,4 @@
+use crate::guess_game;
 use crate::traits;
 use rand::Rng;
 
@@ -27,5 +28,5 @@ impl traits::player_traits::Play<String> for ComputerEasy {
     }
 }
 
-impl traits::player_traits::UpdateGameState<traits::player_traits::Turn> for ComputerEasy {}
-impl traits::player_traits::Player<String, traits::player_traits::Turn> for ComputerEasy {}
+impl traits::player_traits::UpdateGameState<guess_game::board::BoardResponse> for ComputerEasy {}
+impl traits::player_traits::Player<String, guess_game::board::BoardResponse> for ComputerEasy {}
